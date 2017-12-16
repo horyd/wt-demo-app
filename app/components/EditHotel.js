@@ -236,7 +236,7 @@ export default class EditHotel extends React.Component {
                       clearable={false}
                       value={this.state.image.imageUrl || ''}
                       autoFocus="true"
-                      options={this.state.hotel.images.map((url, i)=>{return {value: i, label: url}})}
+                      options={this.state.hotel.images.map((url, i)=> {return {value: i, label: url}}).filter(e => e.label)}
                       onChange={e => this.setState({ image: { imageUrl: e.label, imageIndex: e.value } })}
                     />
                   </div>

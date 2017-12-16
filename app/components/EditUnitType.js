@@ -169,7 +169,7 @@ export default class EditUnitType extends React.Component {
                     clearable={false}
                     value={this.state.image.imageUrl || ''}
                     autoFocus="true"
-                    options={this.props.hotel.unitTypes[this.props.unitType].images.map((url, i)=>{return {value: i, label: url}})}
+                    options={this.props.hotel.unitTypes[this.props.unitType].images.map((url, i)=>{return {value: i, label: url}}).filter(e => e.label)}
                     onChange={e => this.setState({ image: { imageUrl: e.label, imageIndex: e.value } })}
                   />
                 </div>
