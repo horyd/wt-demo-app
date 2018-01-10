@@ -36,9 +36,9 @@ export default class WalletTx extends React.Component {
               <thead>
                 <tr>
                   <th>Hotel Name</th>
-                  <th>Action</th>
-                  <th>Lif Amount</th>
-                  <th>Date</th>
+                  <th>Unit</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
                 </tr>
               </thead>
               <tbody>

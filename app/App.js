@@ -9,6 +9,7 @@ import Explorer from "./views/Explorer";
 import Hotel from "./views/Hotel";
 import Config from "./views/Config";
 import Search from "./views/Search";
+import MyBookings from "./views/MyBookings";
 
 import { ToastContainer, toast } from 'react-toastify';
 import Tx from './components/Tx'
@@ -99,7 +100,8 @@ export default class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route path="/wallet" component={Wallet}></Route>
-            <Route path="/explorer" component={Explorer}></Route>
+						<Route path="/explorer" component={Explorer}></Route>
+            <Route path="/mybookings" component={MyBookings}></Route>
             <Route path="/hotel" render={() => <Hotel getCallbacks={this.getCallbacks.bind(this)} pendingTxHashes={this.state.pendingTxHashes}/>}></Route>
             <Route path="/config" component={Config}></Route>
             <Route path="/search" component={Search}></Route>
