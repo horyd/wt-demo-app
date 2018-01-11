@@ -58,7 +58,6 @@ export default class MyBookings extends React.Component {
           web3: web3                     // Web3 object instantiated with a provider
         })
         await this.setState({hotelManager: hotelManager, bookingData: bookingData, user: user});
-        await this.loadHotels();
         await this.loadTxs();
     }
 
@@ -75,30 +74,6 @@ export default class MyBookings extends React.Component {
         console.log('got TXs');
         console.log(txs);
       self.setState({bookingTxs: txs, loading: false});
-    }
-
-    async loadHotels() {
-      var self = this;
-      self.setState({loading: true});
-      var hotelsAddrs = await self.state.hotelManager.WTIndex.methods.getHotels().call();
-      hotelsAddrs = hotelsAddrs.filter(addr => addr !== "0x0000000000000000000000000000000000000000");
-      var hotels = [];
-      let totalHotels = hotelsAddrs.length;
-      for (var i = 0; i <= totalHotels - 1; i++)
-        hotels.push(await self.getHotelInfo(hotelsAddrs[i]));
-      self.setState({
-        hotels: hotels,
-        totalHotels: totalHotels,
-        loading: false
-      });
-    }
-
-    async getHotelInfo(hotelAddr) {
-      var self = this;
-      var hotelInstance = Utils.getInstance('Hotel', hotelAddr, {web3: web3});
-      let hotelNames = self.state.hotelNames;
-      hotelNames[hotelAddr] = await hotelInstance.methods.name().call();
-      self.setState({ hotelNames: hotelNames });
     }
 
     render() {
@@ -118,20 +93,22 @@ export default class MyBookings extends React.Component {
                     <tr>
                       <th>Hotel Name</th>
                       <th>Action</th>
+                      <th>Unit</th>
                       <th>From Date</th>
                       <th>To Date</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {self.state.bookingTxs.map(function(tx, i){
-                        if(tx.hotel && !self.state.hotelNames[tx.hotel])
-                          self.getHotelInfo(tx.hotel);
                         return (
                           <tr key={'tx'+i} class="pointer">
-                            <td>{tx.hotel ? self.state.hotelNames[tx.hotel] : ''}</td>
+                            <td>{tx.hotelName}</td>
                             <td>{tx.method.name}</td>
-                            <td>{tx.fromDate.toString()}</td>
-                            <td>{tx.toDate.toString()}</td>
+                            <td>{tx.unitType + ' ' + tx.method.params.find(param => param.name == 'unitAddress').value.substring(2,6)}</td>
+                            <td>{moment(tx.fromDate).format('MMMM Do YYYY')}</td>
+                            <td>{moment(tx.toDate).format('MMMM Do YYYY')}</td>
+                            <td>{tx.status ? 'Approved' : 'Pending'}</td>
                           </tr>
                         );
                     })}
